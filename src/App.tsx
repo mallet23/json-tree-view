@@ -24,7 +24,12 @@ const App: React.FC = () => {
   return (
     <div className={styles.app}>
       <div className={styles.sidebar}>
-        <input type="file" accept=".json" onChange={handleUpload} />
+        <input
+          className={styles.chooseFileBtn}
+          type="file"
+          accept=".json"
+          onChange={handleUpload}
+        />
         <TreeView data={data} onSelect={setSelected} selected={selected} />
       </div>
       <div className={styles.content}>

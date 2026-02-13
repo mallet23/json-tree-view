@@ -1,4 +1,15 @@
- .treeRoot {
-   list-style: none;
-   padding-left: 8px;
- }
+.treeContainer {
+  height: calc(100% - 27px);
+  overflow: auto;
+  position: relative;
+}
+
+.treeInner {
+  position: relative;
+}
+
+.treeRowWrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+}

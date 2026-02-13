@@ -10,9 +10,3 @@
  .itemRowSelected {
    background: #e3f2fd;
  }
-
- .treeChildren {
-   list-style: none;
-   padding-left: 8px;
-   margin: 0;
- }
