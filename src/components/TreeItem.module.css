@@ -1,0 +1,18 @@
+ .itemRow {
+   cursor: pointer;
+   padding: 2px 4px;
+   border-radius: 3px;
+   user-select: none;
+   display: flex;
+   column-gap: 4px;
+ }
+
+ .itemRowSelected {
+   background: #e3f2fd;
+ }
+
+ .treeChildren {
+   list-style: none;
+   padding-left: 8px;
+   margin: 0;
+ }
