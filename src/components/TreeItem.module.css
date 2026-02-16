@@ -5,8 +5,18 @@
    user-select: none;
    display: flex;
    column-gap: 4px;
+   align-items: center;
+   min-width: 0;
  }
-
+ 
  .itemRowSelected {
    background: #e3f2fd;
+ }
+
+ .itemName {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   min-width: 0;
+   flex: 1;
  }
