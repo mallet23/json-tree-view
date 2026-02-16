@@ -81,6 +81,7 @@ const TreeView: React.FC = () => {
             >
               <TreeItem
                 path={item.path}
+                name={item.name}
                 level={item.level}
                 hasChildren={item.hasChildren}
                 isExpanded={item.isExpanded}

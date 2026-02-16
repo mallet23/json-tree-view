@@ -2,7 +2,7 @@ import { TreeNode } from '../../TreeNode';
 
 export interface VisibleNode {
   path: string;
-  node: TreeNode;
+  name: string;
   level: number;
   hasChildren: boolean;
   isExpanded: boolean;
@@ -23,7 +23,7 @@ export const buildVisibleNodes = (
 
     result.push({
       path,
-      node,
+      name: node.name,
       level,
       hasChildren,
       isExpanded,
