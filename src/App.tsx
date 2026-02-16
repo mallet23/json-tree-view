@@ -7,19 +7,22 @@ import { useTreeStore } from './store';
 const App: React.FC = () => {
   const setTreeData = useTreeStore((state) => state.setTreeData);
 
-  const handleUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const json = JSON.parse(event.target?.result as string);
-      setTreeData(json);
-    };
-    reader.readAsText(file);
-    // Reset input value to allow uploading the same file again
-    e.target.value = '';
-  }, [setTreeData]);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const json = JSON.parse(event.target?.result as string);
+        setTreeData(json);
+      };
+      reader.readAsText(file);
+      // Reset input value to allow uploading the same file again
+      e.target.value = '';
+    },
+    [setTreeData],
+  );
 
   return (
     <div className={styles.app}>

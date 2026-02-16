@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 
 import { useTreeStore } from '../store';
-import { findNodeByPath } from './utils';
 
 import styles from './DetailedPanel.module.css';
+import { findNodeByPath } from './utils';
 
 const DetailedPanel: React.FC = () => {
   const treeData = useTreeStore((state) => state.treeData);
