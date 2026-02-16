@@ -57,3 +57,21 @@ export const togglePathWithDescendants = (
 
   return next;
 };
+
+export const findNodeByPath = (
+  nodes: TreeNode[],
+  path: string,
+): TreeNode | null => {
+  const indices = path.split('.').map(Number);
+  let current: TreeNode | TreeNode[] = nodes;
+
+  for (const index of indices) {
+    if (Array.isArray(current) && current[index]) {
+      current = current[index];
+    } else {
+      return null;
+    }
+  }
+
+  return Array.isArray(current) ? null : current;
+};

@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { TreeNode } from '../TreeNode';
+import { useTreeStore } from '../store';
+import { findNodeByPath } from './utils';
 
 import styles from './DetailedPanel.module.css';
 
-interface DetailedPanelProps {
-  node: TreeNode | null;
-}
+const DetailedPanel: React.FC = () => {
+  const treeData = useTreeStore((state) => state.treeData);
+  const selectedPath = useTreeStore((state) => state.selectedPath);
 
-const DetailedPanel: React.FC<DetailedPanelProps> = ({ node }) => {
+  const node = useMemo(() => {
+    if (!selectedPath) return null;
+    return findNodeByPath(treeData, selectedPath);
+  }, [treeData, selectedPath]);
+
   if (!node) {
     return (
       <div className={styles.placeholder}>Select a node to see details</div>

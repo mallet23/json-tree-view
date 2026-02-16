@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import styles from './App.module.css';
-import { TreeNode } from './TreeNode';
 import { DetailedPanel, TreeView } from './components';
+import { useTreeStore } from './store';
 
 const App: React.FC = () => {
-  const [data, setData] = useState<TreeNode[]>([]);
-  const [selected, setSelected] = useState<TreeNode | null>(null);
+  const setTreeData = useTreeStore((state) => state.setTreeData);
 
   const handleUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -15,11 +14,10 @@ const App: React.FC = () => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const json = JSON.parse(event.target?.result as string);
-      setData(json);
-      setSelected(null);
+      setTreeData(json);
     };
     reader.readAsText(file);
-  }, []);
+  }, [setTreeData]);
 
   return (
     <div className={styles.app}>
@@ -30,10 +28,10 @@ const App: React.FC = () => {
           accept=".json"
           onChange={handleUpload}
         />
-        <TreeView data={data} onSelect={setSelected} selected={selected} />
+        <TreeView />
       </div>
       <div className={styles.content}>
-        <DetailedPanel node={selected} />
+        <DetailedPanel />
       </div>
     </div>
   );

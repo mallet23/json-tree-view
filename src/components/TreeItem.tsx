@@ -1,29 +1,36 @@
 import React, { useCallback } from 'react';
 
-import { TreeNode } from '../TreeNode';
+import { useTreeStore } from '../store';
 
 import styles from './TreeItem.module.css';
 
 interface TreeItemProps {
-  node: TreeNode;
+  path: string;
+  name: string;
   level: number;
   hasChildren: boolean;
   isExpanded: boolean;
-  onToggle: () => void;
-  onSelect: (node: TreeNode) => void;
-  selected: TreeNode | null;
+  isSelected: boolean;
+  onToggle: (path: string) => void;
+  onSelect: (path: string) => void;
 }
 
 const TreeItem: React.FC<TreeItemProps> = ({
-  node,
+  path,
+  name,
   level,
   hasChildren,
   isExpanded,
+  isSelected,
   onToggle,
   onSelect,
-  selected,
 }) => {
-  const isSelected = selected === node;
+  const handleSelect = useCallback(() => {
+    onSelect(path);
+  }, [onSelect, path]);
+  const handleToggle = useCallback(() => {
+    onToggle(path);
+  }, [onToggle, path]);
 
   const rowClassName = `${styles.itemRow} ${isSelected ? styles.itemRowSelected : ''}`;
   const childPadding = { paddingLeft: level * 12 };
@@ -31,9 +38,11 @@ const TreeItem: React.FC<TreeItemProps> = ({
   return (
     <div className={rowClassName} style={childPadding}>
       {hasChildren && (
-        <button onClick={onToggle}>{isExpanded ? '-' : '+'}</button>
+        <button onClick={handleToggle}>{isExpanded ? '-' : '+'}</button>
       )}
-      <span onClick={() => onSelect(node)}>{node.name}</span>
+      <span className={styles.itemName} onClick={handleSelect} title={name}>
+        {name}
+      </span>
     </div>
   );
 };

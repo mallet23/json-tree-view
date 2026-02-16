@@ -6,23 +6,21 @@ import React, {
   useState,
 } from 'react';
 
-import { TreeNode } from '../TreeNode';
+import { useTreeStore } from '../store';
 
 import { TreeItem } from './TreeItem';
 import styles from './TreeView.module.css';
 import { useResizeObserver, useVirtualList } from './hooks';
 import { buildVisibleNodes, togglePathWithDescendants } from './utils';
 
-interface TreeViewProps {
-  data: TreeNode[];
-  onSelect: (node: TreeNode) => void;
-  selected: TreeNode | null;
-}
-
 const ROW_HEIGHT = 24;
 const OVERSCAN_COUNT = 5;
 
-const TreeView: React.FC<TreeViewProps> = ({ data, onSelect, selected }) => {
+const TreeView: React.FC = () => {
+  const treeData = useTreeStore((state) => state.treeData);
+  const selectedPath = useTreeStore((state) => state.selectedPath);
+  const setSelectedPath = useTreeStore((state) => state.setSelectedPath);
+
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -32,11 +30,11 @@ const TreeView: React.FC<TreeViewProps> = ({ data, onSelect, selected }) => {
   useEffect(() => {
     setExpandedPaths(new Set());
     setScrollTop(0);
-  }, [data]);
+  }, [treeData]);
 
   const visibleNodes = useMemo(
-    () => buildVisibleNodes(data, expandedPaths),
-    [data, expandedPaths],
+    () => buildVisibleNodes(treeData, expandedPaths),
+    [treeData, expandedPaths],
   );
 
   const { totalHeight, startIndex, windowedItems } = useVirtualList({
@@ -54,6 +52,13 @@ const TreeView: React.FC<TreeViewProps> = ({ data, onSelect, selected }) => {
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(event.currentTarget.scrollTop);
   }, []);
+
+  const handleSelect = useCallback(
+    (path: string) => {
+      setSelectedPath(path);
+    },
+    [setSelectedPath],
+  );
 
   return (
     <div
@@ -75,13 +80,13 @@ const TreeView: React.FC<TreeViewProps> = ({ data, onSelect, selected }) => {
               }}
             >
               <TreeItem
-                node={item.node}
+                path={item.path}
                 level={item.level}
                 hasChildren={item.hasChildren}
                 isExpanded={item.isExpanded}
-                onToggle={() => handleToggle(item.path)}
-                onSelect={onSelect}
-                selected={selected}
+                isSelected={selectedPath === item.path}
+                onToggle={handleToggle}
+                onSelect={handleSelect}
               />
             </div>
           );
